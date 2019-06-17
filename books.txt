@@ -1,0 +1,4 @@
+1 C语言程序设计 4 2 西安电子科技大学出版社 NULL 李忱洋 NULL NULL NULL 
+2 数据结构与算法分析 3 0 西安电子科技大学出版社 翟丽双 张成骏 向沸林 NULL NULL 
+3 逆向工程权威指南 2 1 人民邮电出版社 朱瑞风 NULL NULL NULL NULL 
+4 大学英语 5 4 张一帆 NULL NULL NULL NULL NULL 
