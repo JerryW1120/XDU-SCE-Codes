@@ -1,0 +1,66 @@
+1.	查询高数不及格的学生数量
+select *
+from SC
+where Cno = 1 and GRADE < 60
+
+2.	查询同时有三门课不及格的同学学号
+select Sno
+from student,SC
+where student.Sno = SC.Sno and GRADE < 60
+group by SC.Cno
+having count(GRADE) >= 3
+
+3.	查询某个店铺销售量最少的5种商品以及店长姓名电话
+select 商品名,店主,联系电话,已销售数量
+from GOODS,SHOP
+where 所在店 = ‘湖景店’ and 名称 = ‘湖景店’
+order by 已销售数量 ASC
+limit 5
+
+4.	列举所有酒店客人，查询入住过某人入住所有客房类型的客人列表
+select 姓名, 所定房类型
+from infoofcustomer x
+where not exists (
+select *
+from  infoofcustomer y
+where y.姓名 = ‘赵思佳’ and not exists(
+select *
+from  infoofcustomer z
+where z.姓名 = x.姓名 
+and z.所定房类型 =  y.所定房类型))
+group by 锁定房类型
+
+5.	查询入住时间最长的客人、入住天数、客房面积、床大小
+select 姓名,max(预定天数),价格,床数量
+from infoofroom, infoofcustomer
+
+6.	查询某个日期上午是否满足至少1间会议室空闲且有空闲客房数目大于10
+select distinct
+(select count(状态) 会议室空闲
+from infoofroom 
+where 
+    (
+        (类型='会议室' and 状态='空闲')
+        OR
+        (预订入住1>2019-7-5 and 预定退房1< 2019-7-6)
+    ))会议室空闲,
+(select count(状态)
+from infoofroom 
+where 
+    (
+        (类型!='会议室' and 状态='空闲')
+        OR
+        (预订入住1>2019-7-5 and 预定退房1< 2019-7-6)
+    ))客房空闲
+
+7.	设计告警记录表和触发器，当某天预定客房数大于16时，向告警记录表插入一条记录。请触发该告警。
+create trigger logofroom(1) after update/insert
+on infoofroom
+when 16 <= (
+select count(状态)
+from infoofroom
+where 状态 = ‘预定’
+)
+begin
+    insert into log1 values(daytime(‘now’))
+end;
